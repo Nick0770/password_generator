@@ -5,85 +5,85 @@ from sys import exit
 vari = [['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], 
         ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n','m'],
         ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N','M'],
-        ['`', '~', '!', '#', '$', '%', '^', '*', '&', '(', ')', '-', '_', '+', '=', '|', '[', ']', '{', '}', ':', ';', '"', '<', '>''/', '?', ',', '.']] #  это всё - варианты символов в пароле
+        ['`', '~', '!', '#', '$', '%', '^', '*', '&', '(', ')', '-', '_', '+', '=', '|', '[', ']', '{', '}', ':', ';', '"', '<', '>''/', '?', ',', '.']] #  that's all - variants of characters in the password
 
-#  функция для выключения программы в любом месте
+#  function to turn off the program anywhere
 def off(res):
     if res == 0:
         exit()
 
 while True:
     sleep(0.3)
-    print('Чтобы прекратить работу, нажмите 0 во время любого ввода!')
+    print('To stop working, press 0 during any input!')
     sleep(0.3)
-    #  цикл для ввода длины пароля, чтобы избежать ошибок от пользователя
+    #  loop to enter password length to avoid errors from user
     while True:
         try:
-            user_choice = int(input('Введите длину пароля (минимальная длина - 4): ')) 
+            user_choice = int(input('Enter the password length (minimum length is 4): ')) 
             off(user_choice)
             if user_choice < 4:
                 continue
             break
         except ValueError:
-            print('Длина пароля должна быть числом!')
+            print('Password length must be a number!')
             continue
 
-    password = '' # сюда записывается пароль
+    password = '' # password is written here
 
-    #  цикл для создания пароля
+    #  loop to create a password
     for i in range(user_choice):
         password += choice(choice(vari))
 
-    #  это контроль пароля, чтобы он был максимально усложнённым
+    #  this is password control to make it as complex as possible
     def control(string: str, variant: list): 
         for i in variant:
             if i in string:
-                print('Проверка пройдена!')
+                print('Verification passed!')
                 sleep(0.2)
                 return ''
-        print('Длина пароля изменена для большей безопасности!')
+        print('Password length has been changed for greater security!')
         sleep(0.2)
         return choice(variant)
 
     password += control(password, vari[0]) + control(password, vari[1]) + control(password, vari[2]) + control(password, vari[3])
 
-    print(f'Ваш пароль: {password}')
+    print(f'Your password: {password}')
 
-    #  сохранение в txt
+    #  saving to txt
     while True:
         try:
-            save = int(input('Хотите ли вы сохранить пароль в .txt файл? (1 - да, 2 - нет): '))
+            save = int(input('Do you want to save the password in a .txt file? (1 - yes, 2 - no): '))
             off(save)
             if save != 1 and save != 2 and save != 0:
                 continue
             break
         except ValueError:
-            print('Выбор должен быть числом!')
+            print('The choice must be a number!')
             continue
 
     if save == 1:
-        direction = input('Для чего этот пароль?: ')
+        direction = input('What is this password for?: ')
         if direction == '0':
             exit()
 
         while True:
             try:
-                path = input('Введите полный путь к файлу!:')
+                path = input('Enter the full path to the file!: ')
                 if path == '0':
                     exit()
                 if type(path) != str:
                     continue
                 if path[-4::] != '.txt':
-                    print('Генератор сохраняет только в .txt файлы')
+                    print('The generator saves only to .txt files')
                     continue
                 break
             except ValueError:
-                print('Путь должен быть строкой!')
+                print('The path must be a string!')
                 continue
 
         
         with open(path, 'a', encoding='utf-8') as file:
             file.write(f'{direction}: {password} \n')
-            print('Пароль успешно сохранён!')
+            print('Password successfully saved!')
     
 
